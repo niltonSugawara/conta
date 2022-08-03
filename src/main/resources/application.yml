@@ -5,7 +5,7 @@ application:
 spring:
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
   datasource:
     url: jdbc:h2:~/conta
     username: root
@@ -15,3 +15,12 @@ spring:
     console:
       enabled: true
       path: /h2
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      group-id: conta
+topic:
+  name:
+    producer: NOVA_CONTA

@@ -1,6 +1,5 @@
 package com.zupedu.conta.error;
 
-import com.zupedu.conta.transferencia.ContaAgenciaNumeroInexistente;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -31,18 +30,4 @@ public class ExceptionHandler {
                 .internalServerError().body(body);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(ContaAgenciaNumeroInexistente.class)
-    public ResponseEntity<?> handleDatabaseErrorsRequest(ContaAgenciaNumeroInexistente e, WebRequest request) {
-
-        logger.error(" Causa: {} ", e.getMessage());
-
-        Map<String, Object> body = Map.of(
-                "status", 422,
-                "error", e.getCause(),
-                "path", request.getDescription(false).replace("uri=", ""),
-                "timestamp", LocalDateTime.now(),
-                "message", e.getMessage()
-        );
-        return ResponseEntity.unprocessableEntity().body(body);
-    }
 }
