@@ -17,13 +17,16 @@ public class ContaNovaProducer {
     private String topicName;
 
     @Autowired
-    private KafkaTemplate<String, Conta> kafkaTemplate;
+    private KafkaTemplate<String, NovaContaEvent> kafkaTemplate;
 
 
     @Async
     public void send(Conta conta){
-        kafkaTemplate.send(topicName, conta);
+        NovaContaEvent evento = new NovaContaEvent(conta.getId(),
+                conta.getAgencia(), conta.getNumero(), conta.getSaldo());
 
-        logger.info("Evento NOVA_CONTA gerado com sucesso : {} ", conta.toString());
+        kafkaTemplate.send(topicName, evento);
+
+        logger.info("Evento NOVA_CONTA gerado com sucesso : {} ", evento.toString());
     }
 }
