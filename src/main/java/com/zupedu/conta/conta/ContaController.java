@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/contas")
@@ -25,7 +26,7 @@ public class ContaController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> inserir(@Valid @RequestBody ContaRequest request){
         logger.info("Cadastrando uma nova Conta");
-        var conta = request.toModel();
+        Conta conta = request.toModel();
 
         if(contaRepository.findByDocumentoTitular(conta.getDocumentoTitular()).isPresent()){
 
@@ -47,7 +48,7 @@ public class ContaController {
 
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id){
-        var conta = contaRepository.findById(id)
+        Conta conta = contaRepository.findById(id)
                 .orElseThrow(ContaIdInexistenteException::new);
 
         contaRepository.delete(conta);
@@ -57,14 +58,15 @@ public class ContaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> consultar(@PathVariable Long id){
-        var conta = contaRepository.findById(id);
+        Optional<Conta> conta = contaRepository.findById(id);
 
-        if(conta.isEmpty()){
+        if(conta.isPresent()){
+            logger.info("Conta de id {} consultada com sucesso", id);
+
+            return ResponseEntity.ok().body(ContaResponse.from(conta.get()));
+        }else{
             return ResponseEntity.badRequest().body("Não foi possível encontrar conta com este id");
         }
 
-        logger.info("Conta de id {} consultada com sucesso", id);
-
-        return ResponseEntity.ok().body(ContaResponse.from(conta.get()));
     }
 }
