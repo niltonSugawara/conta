@@ -36,39 +36,26 @@ services:
     environment:
       KAFKA_BROKERCONNECT: kafka1:29092
 
-#  schema_registry:
-#    image: confluentinc/cp-schema-registry:latest
-#    hostname: schema_registry
-#    container_name: schema_registry
-#    networks:
-#      - broker-kafka
-#    depends_on:
-#      - zookeeper
-#      - kafka1
-#    ports:
-#      - "8081:8081"
-#    environment:
-#      SCHEMA_REGISTRY_HOST_NAME: schema_registry
-#      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka1:29092
-#      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
-#      SCHEMA_REGISTRY_KAFKASTORE_LISTENERS: http://0.0.0.0:8081
-#      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
-#      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: GET,POST,PUT,DELETE,OPTIONS
-#      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+  schema_registry:
+    image: confluentinc/cp-schema-registry:latest
+    hostname: schema_registry
+    container_name: schema_registry
+    networks:
+      - broker-kafka
+    depends_on:
+      - zookeeper
+      - kafka1
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema_registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka1:29092
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
+      SCHEMA_REGISTRY_KAFKASTORE_LISTENERS: http://0.0.0.0:8081
+      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
+      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: GET,POST,PUT,DELETE,OPTIONS
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
 
-#  schema-registry-ui:
-#    image: landoop/schema-registry-ui
-#    hostname: schema-registry-ui
-#    restart: always
-#    networks:
-#      - broker-kafka
-#    depends_on:
-#      - schema_registry
-#    ports:
-#      - "8000:8000"
-#    environment:
-#      SCHEMAREGISTRY_URL: http://schema_registry:8081
-#      PROXY: "true"
 
 networks:
   broker-kafka:
