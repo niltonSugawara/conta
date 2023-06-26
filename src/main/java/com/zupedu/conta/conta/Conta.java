@@ -62,6 +62,19 @@ public class Conta {
         return saldo;
     }
 
+    @Override
+    public String toString() {
+        return "Conta{" +
+                "id=" + id +
+                ", documentoTitular='" + documentoTitular + '\'' +
+                ", nomeTitular='" + nomeTitular + '\'' +
+                ", agencia=" + agencia +
+                ", numero=" + numero +
+                ", saldo=" + saldo +
+                ", dataCriacao=" + dataCriacao +
+                '}';
+    }
+
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
